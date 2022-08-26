@@ -1,0 +1,15 @@
+<script setup lang="ts">
+import CdoAppHeader from "./components/CdoAppHeader.vue";
+</script>
+
+<template>
+  <CdoAppHeader></CdoAppHeader>
+  <router-view></router-view>
+</template>
+
+<style scoped>
+body {
+  background-color: aqua;
+  color: black;
+}
+</style>
