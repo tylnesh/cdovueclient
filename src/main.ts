@@ -1,6 +1,8 @@
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap/dist/js/bootstrap"
 import "bootstrap"
+import "bootstrap-icons/font/bootstrap-icons.css"
+
 
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from "vue-router"
@@ -21,6 +23,8 @@ const router = createRouter({
     {path: '/dealers', name: "Dealers", component: Dealers}
   ]
 })
+
+export { router };
 const app = createApp(App)
 
 app.use(router)
