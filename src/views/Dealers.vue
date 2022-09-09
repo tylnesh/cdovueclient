@@ -8,16 +8,61 @@ import {
 } from "../global";
 
 import { router } from "../main";
-import DataTable from "../components/DataTable.vue";
-const email = ref("");
-const pass = ref("");
+
+import DataTable from "datatables.net-vue3";
+import Select from "datatables.net-select";
+
+DataTable.use(Select);
+
+let counter = 0;
+let dt: any;
+const table = ref();
+
+const data: string[] = [];
+const columns = [
+  {
+    data: "a",
+    title: "First",
+  },
+  {
+    data: "b",
+    title: "Second",
+  },
+  {
+    data: "c",
+    title: "Third",
+  },
+];
+
+for (let i = 0; i < 5; i++) {
+  add();
+}
+
+function add() {
+  data.value.push({
+    a: "A-" + counter,
+    b: "B-" + counter,
+    c: "C-" + counter,
+  });
+
+  counter += 1;
+}
+
+function remove() {
+  dt.rows({ selected: true }).every(function () {
+    let idx = data.value.indexOf(this.data());
+    data.value.splice(idx, 1);
+  });
+}
 
 const aT = ref("buzz off");
 
-//aT.value = getAccessToken();
+aT.value = getAccessToken();
 //onMounted(() => console.log(getAccessToken()));
 
 onMounted(() => {
+  dt = table.value.dt();
+
   fetch("http://localhost:8080/api/dealer", {
     method: "GET",
     headers: {
@@ -76,8 +121,20 @@ function refreshTokens() {
 <template>
   <h1 class="text-light">Dealers</h1>
   <h2 class="text-light">{{ aT }}</h2>
+
+  <button @click="add">Add new row</button><br />
+  <button @click="update">Update selected rows</button><br />
+  <button @click="remove">Delete selected rows</button>
+
+  <DataTable
+    class="display"
+    :columns="columns"
+    :data="data"
+    :options="{ select: true }"
+    ref="table"
+  />
+
   <button @click="refreshTable()">Refresh Button</button>
-  <DataTable> </DataTable>
 </template>
 
 <style scoped>
