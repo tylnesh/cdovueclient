@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 
 export default defineConfig({
   plugins: [ 
@@ -7,11 +8,20 @@ export default defineConfig({
     {
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => tag.includes('CDO')
-        }
+          isCustomElement: (tag) => {
+            return tag.includes('CDO')
+          }
+        },
+        transformAssetUrls
       }
     }
-  )],
+  ),
+
+  quasar({
+    sassVariables: 'src/quasar-variables.sass'
+  })
+
+],
   server: {
     port: 3000
   }

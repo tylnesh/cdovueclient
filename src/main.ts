@@ -6,9 +6,23 @@ import "bootstrap-icons/font/bootstrap-icons.css"
 
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from "vue-router"
+
+import { Quasar } from 'quasar'
+import quasarIconSet from 'quasar/icon-set/bootstrap-icons'
+
+// Import icon libraries
+import '@quasar/extras/material-icons/material-icons.css'
+import '@quasar/extras/fontawesome-v5/fontawesome-v5.css'
+// ..required because of selected iconSet:
+import '@quasar/extras/bootstrap-icons/bootstrap-icons.css'
+
+// Import Quasar css
+import 'quasar/src/css/index.sass' 
+
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import Dealers from './views/Dealers.vue'
+
 
 
 import App from './App.vue'
@@ -26,6 +40,9 @@ const router = createRouter({
 
 export { router };
 const app = createApp(App)
-
+app.use(Quasar, {
+  plugins: {}, // import Quasar plugins and add here
+  iconSet: quasarIconSet,
+})
 app.use(router)
 app.mount('#app')

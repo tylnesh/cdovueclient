@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, Ref } from "vue";
 import {
   getAccessToken,
   getRefreshToken,
@@ -9,93 +9,53 @@ import {
 
 import { router } from "../main";
 
-import DataTable from "datatables.net-vue3";
-import Select from "datatables.net-select";
-
-DataTable.use(Select);
-
-let counter = 0;
-let dt: any;
-const table = ref();
-
-const data: string[] = [];
+const rows: Ref<Array<{ id: number; dealer: string; slug: string }>> = ref([]);
 const columns = [
   {
-    data: "a",
-    title: "First",
+    name: "dealer",
+    required: true,
+    align: "left",
+    label: "Dealer name",
+    field: (row: { dealer: any }) => row.dealer,
+    sortable: true,
+  },
+  { name: "slug", align: "left", label: "Dealer slug", field: "slug", sortable: true },
+  {
+    name: "createdAt",
+    align: "left",
+    label: "Date of creation",
+    field: "createdAt",
+    sortable: true,
   },
   {
-    data: "b",
-    title: "Second",
-  },
-  {
-    data: "c",
-    title: "Third",
+    name: "updateAt",
+    align: "left",
+    label: "Last updated",
+    field: "updatedAt",
+    sortable: true,
   },
 ];
 
-for (let i = 0; i < 5; i++) {
-  add();
-}
+const selected = ref([]);
 
-function add() {
-  data.value.push({
-    a: "A-" + counter,
-    b: "B-" + counter,
-    c: "C-" + counter,
-  });
-
-  counter += 1;
-}
-
-function remove() {
-  dt.rows({ selected: true }).every(function () {
-    let idx = data.value.indexOf(this.data());
-    data.value.splice(idx, 1);
-  });
-}
-
-const aT = ref("buzz off");
-
-aT.value = getAccessToken();
-//onMounted(() => console.log(getAccessToken()));
-
-onMounted(() => {
-  dt = table.value.dt();
-
-  fetch("http://localhost:8080/api/dealer", {
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + getAccessToken(),
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.error_message === undefined) {
-        aT.value = data.content[0].dealer;
-      } else {
-        refreshTokens();
-        refreshTable();
-      }
-    });
+onMounted(async () => {
+  await refreshTable();
 });
 
-function refreshTable() {
-  fetch("http://localhost:8080/api/dealer", {
+async function refreshTable() {
+  const request = await fetch("http://localhost:8080/api/dealer", {
     method: "GET",
     headers: {
       Authorization: "Bearer " + getAccessToken(),
     },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.error_message === undefined) {
-        aT.value = data.content[0].dealer;
-      } else {
-        refreshTokens();
-        refreshTable();
-      }
-    });
+  });
+  if (request.status == 403) {
+    refreshTokens();
+    refreshTable();
+  } else {
+    let json = await request.json();
+    rows.value = await json["content"];
+  }
 }
 
 function refreshTokens() {
@@ -116,25 +76,25 @@ function refreshTokens() {
     })
     .then(() => console.log(getAccessToken()));
 }
+
+function createRow() {}
 </script>
 
 <template>
-  <h1 class="text-light">Dealers</h1>
-  <h2 class="text-light">{{ aT }}</h2>
+  <button class="btn btn-primary ms-2 mb-2" @click="refreshTable">Refresh Button</button>
+  <button class="btn btn-primary ms-2 mb-2" @click="createRow">New</button>
+  <button class="btn btn-primary ms-2 mb-2" @click="editRow">Edit</button>
+  <button class="btn btn-primary ms-2 mb-2" @click="deleteRow">Delete</button>
 
-  <button @click="add">Add new row</button><br />
-  <button @click="update">Update selected rows</button><br />
-  <button @click="remove">Delete selected rows</button>
-
-  <DataTable
-    class="display"
+  <q-table
+    title="Dealers"
+    :rows="rows"
     :columns="columns"
-    :data="data"
-    :options="{ select: true }"
-    ref="table"
-  />
-
-  <button @click="refreshTable()">Refresh Button</button>
+    row-key="dealer"
+    selection="multiple"
+    v-model:selected="selected"
+  ></q-table>
+  <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
 </template>
 
 <style scoped>
