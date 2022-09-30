@@ -7,6 +7,9 @@ import {
   setRefreshToken,
   getRefreshToken,
 } from "../global";
+
+import CreateRowModal from "../components/CreateRowModal.vue";
+
 const email = ref("");
 const pass = ref("");
 
@@ -32,11 +35,24 @@ async function submitLogin(e: Event) {
     })
     .then(() => console.log(getAccessToken()));
 }
+
+const isOpen = ref(false);
 </script>
 
 <template>
   <div class="center text-light mt-3">
     <h3>Login</h3>
+
+    <button class="btn btn-primary ms-2 mb-2" @click="isOpen = true">New</button>
+
+    <CreateRowModal :open="isOpen" @close="isOpen = !isOpen">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut sunt ducimus eveniet
+        dolor dolorem nam ut voluptas, officiis ipsa itaque aperiam quos voluptatibus a.
+        Quae temporibus quam incidunt ad illum.
+      </p>
+    </CreateRowModal>
+
     <form v-on:submit="submitLogin">
       <div class="mb-3 left-align">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
