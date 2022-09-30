@@ -9,6 +9,8 @@ import {
 
 import { router } from "../main";
 
+import CreateRowModal from "../components/CreateRowModal.vue";
+
 const rows: Ref<Array<{ id: number; dealer: string; slug: string }>> = ref([]);
 const columns = [
   {
@@ -37,6 +39,8 @@ const columns = [
 ];
 
 const selected = ref([]);
+
+const isOpen = ref(false);
 
 onMounted(async () => {
   await refreshTable();
@@ -82,13 +86,21 @@ function createRow() {}
 
 <template>
   <button class="btn btn-primary ms-2 mb-2" @click="refreshTable">Refresh Button</button>
-  <button class="btn btn-primary ms-2 mb-2" @click="createRow">New</button>
+  <button class="btn btn-primary ms-2 mb-2" @click="isOpen = true">New</button>
   <button class="btn btn-primary ms-2 mb-2" @click="editRow">Edit</button>
   <button class="btn btn-primary ms-2 mb-2" @click="deleteRow">Delete</button>
 
+  <CreateRowModal :open="isOpen" @close="isOpen = !isOpen">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut sunt ducimus eveniet
+      dolor dolorem nam ut voluptas, officiis ipsa itaque aperiam quos voluptatibus a.
+      Quae temporibus quam incidunt ad illum.
+    </p>
+  </CreateRowModal>
+
   <q-table
     title="Dealers"
-    :rows="rows"
+    :rows="rows" 
     :columns="columns"
     row-key="dealer"
     selection="multiple"
