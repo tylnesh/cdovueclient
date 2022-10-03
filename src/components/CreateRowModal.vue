@@ -18,6 +18,7 @@ const props = defineProps({
   },
 });
 
+//TODO: Implement submit form
 async function submitForm(e: Event) {
   e.preventDefault();
   let formBody: string[] = [];
