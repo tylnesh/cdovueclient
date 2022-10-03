@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
-  
-  
+import { onMounted, ref } from "vue";
+
+import { getAccessToken } from "../global";
+
 const props = defineProps({
   open: {
     type: Boolean,
@@ -9,48 +10,62 @@ const props = defineProps({
   },
   submitUrl: {
     type: String,
-    required: true
+    required: true,
   },
   inputForm: {
     type: Array,
-    required:true
-  }
-
+    required: true,
+  },
 });
 
-function submitForm(e :Event) {
-  // e.preventDefault();
+async function submitForm(e: Event) {
+  e.preventDefault();
+  let formBody: string[] = [];
+  formBody.push(encodeURIComponent("username") + "=" + encodeURIComponent(email.value));
+  formBody.push(encodeURIComponent("password") + "=" + encodeURIComponent(pass.value));
+  let formBodyString = formBody.join("&");
+  fetch("http://localhost:8080/api/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: formBodyString,
+  });
 
-  // let formBody: string[] = [];
-  // formBody.push(encodeURIComponent("username") + "=" + encodeURIComponent(email.value));
-  // formBody.push(encodeURIComponent("password") + "=" + encodeURIComponent(pass.value));
-  // let formBodyString = formBody.join("&");
-
-  // fetch("http://localhost:8080/api/login", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/x-www-form-urlencoded",
-  //   },
-  //   body: formBodyString,
-  // })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     setAccessToken(data.access_token);
-  //     setRefreshToken(data.refresh_token);
-  //   })
-  //   .then(() => console.log(getAccessToken()));
+  const request = await fetch(this.submitUrl, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + getAccessToken(),
+    },
+  });
+  // if (request.status == 403) {
+  //   refreshTokens();
+  //   refreshTable();
+  // } else {
+  //   let json = await request.json();
+  //   rows.value = await json["content"];
+  // }
 }
-
-
 </script>
-TODO: generate form from JSOM schema
+// TODO: generate form from JSON schema
 <template>
   <div class="vue-modal" v-show="open">
     <div class="vue-modal-inner">
-      <div id ="create-row-content" class="vue-modal-content">
+      <div id="create-row-content" class="vue-modal-content">
         <slot />
         <form v-on:submit="submitForm">
-      <!-- <div class="mb-3 left-align">
+          <div
+            class="m-3"
+            v-for="(inputFormPart, counter) in this.inputForm"
+            v-bind:key="counter"
+          >
+            <label for="name" class="form-label">{{ inputFormPart.label }}</label>
+            <input type="text" class="form-control" id="inputFormPart.name" />
+          </div>
+
+          <!-- name: "dealer", label: "Dealer name", field: "dealer", -->
+
+          <!-- <div class="mb-3 left-align">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
         <input
           type="email"
@@ -73,13 +88,14 @@ TODO: generate form from JSOM schema
       </div>
     </form>
         <button class="btn btn-primary m-2" type="button" @click="submitForm">Submit</button> -->
-
         </form>
 
-        <button class="btn btn-primary m-2" type="button" @click="$emit('close')">Close</button>
+        <button class="btn btn-primary m-2" type="button" @click="$emit('close')">
+          Close
+        </button>
 
         <!-- <p>{{ this.submitUrl }}</p> -->
-        <p> {{ this.inputForm[0] }}</p>
+        <p>{{ this.inputForm[0] }}</p>
       </div>
     </div>
   </div>

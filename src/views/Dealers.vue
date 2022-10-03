@@ -20,29 +20,23 @@ const columns = [
     align: left,
     label: "Dealer name",
     field: "dealer",
-    sortable: true
+    sortable: true,
   },
-  { name: "slug", 
-    align: left, 
-    label: "Dealer slug", 
-    field: "slug", 
-    sortable: true 
-  },
+  { name: "slug", align: left, label: "Dealer slug", field: "slug", sortable: true },
   {
-
     name: "createdAt",
     align: left,
     label: "Date of creation",
     field: "createdAt",
-    sortable: true
+    sortable: true,
   },
   {
     name: "updateAt",
     align: left,
     label: "Last updated",
     field: "updatedAt",
-    sortable: true
-  }
+    sortable: true,
+  },
 ];
 
 const selected = ref([]);
@@ -51,15 +45,18 @@ const isOpen = ref(false);
 
 const submitUrl = ref("https://localhost:8080/api/dealer/post");
 
-const inputForm = ref([{
+const inputForm = ref([
+  {
     name: "dealer",
     label: "Dealer name",
     field: "dealer",
   },
-  { name: "slug", 
-    label: "Dealer slug", 
-    field: "slug", 
-  }])
+  {
+    name: "slug",
+    label: "Dealer slug",
+    field: "slug",
+  },
+]);
 
 onMounted(async () => {
   await refreshTable();
@@ -99,8 +96,6 @@ function refreshTokens() {
     })
     .then(() => console.log(getAccessToken()));
 }
-
-
 </script>
 
 <template>
@@ -109,17 +104,18 @@ function refreshTokens() {
   <!-- <button class="btn btn-primary ms-2 mb-2" @click="editRow">Edit</button>
   <button class="btn btn-primary ms-2 mb-2" @click="deleteRow">Delete</button> -->
 
-  <CreateRowModal :open="isOpen" @close="isOpen = !isOpen" :submitUrl="submitUrl" :inputForm = "inputForm">
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut sunt ducimus eveniet
-      dolor dolorem nam ut voluptas, officiis ipsa itaque aperiam quos voluptatibus a.
-      Quae temporibus quam incidunt ad illum.
-    </p>
+  <CreateRowModal
+    :open="isOpen"
+    @close="isOpen = !isOpen"
+    :submitUrl="submitUrl"
+    :inputForm="inputForm"
+  >
+    <h3>New dealer</h3>
   </CreateRowModal>
 
   <q-table
     title="Dealers"
-    :rows="rows" 
+    :rows="rows"
     :columns="columns"
     row-key="dealer"
     selection="multiple"
