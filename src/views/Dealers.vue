@@ -43,7 +43,7 @@ const selected = ref([]);
 
 const isOpen = ref(false);
 
-const submitUrl = ref("https://localhost:8080/api/dealer/post");
+const submitUrl = ref("http://localhost:8080/api/dealer/post");
 
 const inputForm = ref([
   {
@@ -99,14 +99,19 @@ function refreshTokens() {
 </script>
 
 <template>
-  <button class="btn btn-primary ms-2 mb-2" @click="refreshTable">Refresh Button</button>
+  <button class="btn btn-secondary ms-2 mb-2" @click="refreshTable">Refresh</button>
   <button class="btn btn-primary ms-2 mb-2" @click="isOpen = true">New</button>
   <!-- <button class="btn btn-primary ms-2 mb-2" @click="editRow">Edit</button>
   <button class="btn btn-primary ms-2 mb-2" @click="deleteRow">Delete</button> -->
 
   <CreateRowModal
     :open="isOpen"
-    @close="isOpen = !isOpen"
+    @close="
+      {
+        isOpen = !isOpen;
+        refreshTable();
+      }
+    "
     :submitUrl="submitUrl"
     :inputForm="inputForm"
   >

@@ -1,54 +1,50 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { propsToAttrMap } from "@vue/shared";
+import { onMounted, ref, reactive } from "vue";
 
 import { getAccessToken } from "../global";
 
-const props = defineProps({
-  open: {
-    type: Boolean,
-    required: true,
-  },
-  submitUrl: {
-    type: String,
-    required: true,
-  },
-  inputForm: {
-    type: Array,
-    required: true,
-  },
-});
+interface Props {
+  open: boolean;
+  submitUrl: string;
+  inputForm: Array<any>;
+}
+const props = defineProps<Props>();
+const inputedValues = reactive([]);
 
 //TODO: Implement submit form
 async function submitForm(e: Event) {
   e.preventDefault();
-  let formBody: string[] = [];
-  formBody.push(encodeURIComponent("username") + "=" + encodeURIComponent(email.value));
-  formBody.push(encodeURIComponent("password") + "=" + encodeURIComponent(pass.value));
-  let formBodyString = formBody.join("&");
-  fetch("http://localhost:8080/api/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: formBodyString,
-  });
 
-  const request = await fetch(this.submitUrl, {
+  // let formBody: string[] = [];
+
+  // for (let i = 0; i < props.inputForm.length; i++) {
+  //   if (typeof props.inputForm[i] === "object") {
+  //     formBody.push(
+  //       encodeURIComponent(props.inputForm[i].field) +
+  //         "=" +
+  //         encodeURIComponent(inputedValues[i])
+  //     );
+  //   }
+  // }
+  // let formBodyString = formBody.join("&");
+
+  let formBody = {};
+  for (let i = 0; i < props.inputForm.length; i++) {
+    const field: string = props.inputForm[i].field;
+    Object.assign(formBody, { [field]: inputedValues[i] });
+  }
+
+  fetch(props.submitUrl, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + getAccessToken(),
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify(formBody),
   });
-  // if (request.status == 403) {
-  //   refreshTokens();
-  //   refreshTable();
-  // } else {
-  //   let json = await request.json();
-  //   rows.value = await json["content"];
-  // }
 }
 </script>
-// TODO: generate form from JSON schema
 <template>
   <div class="vue-modal" v-show="open">
     <div class="vue-modal-inner">
@@ -61,42 +57,23 @@ async function submitForm(e: Event) {
             v-bind:key="counter"
           >
             <label for="name" class="form-label">{{ inputFormPart.label }}</label>
-            <input type="text" class="form-control" id="inputFormPart.name" />
+            <input
+              type="text"
+              class="form-control"
+              id="inputFormPart.name"
+              v-model="inputedValues[counter]"
+            />
           </div>
 
-          <!-- name: "dealer", label: "Dealer name", field: "dealer", -->
-
-          <!-- <div class="mb-3 left-align">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input
-          type="email"
-          class="form-control"
-          id="emailInput"
-          v-model="email"
-          aria-describedby="emailHelp"
-        />
-      </div>
-      <div class="mb-3 left-align">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="passwordInput" v-model="pass" />
-      </div>
-      <div class="mb-3 form-check left-align">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-      </div>
-      <div class="left-align">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
-        <button class="btn btn-primary m-2" type="button" @click="submitForm">Submit</button> -->
+          <div class="left-align">
+            <button type="submit" class="btn btn-primary" @click="$emit('close')">
+              Submit
+            </button>
+            <button class="btn btn-primary m-2" type="button" @click="$emit('close')">
+              Close
+            </button>
+          </div>
         </form>
-
-        <button class="btn btn-primary m-2" type="button" @click="$emit('close')">
-          Close
-        </button>
-
-        <!-- <p>{{ this.submitUrl }}</p> -->
-        <p>{{ this.inputForm[0] }}</p>
       </div>
     </div>
   </div>
