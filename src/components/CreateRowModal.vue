@@ -10,25 +10,12 @@ interface Props {
   inputForm: Array<any>;
 }
 const props = defineProps<Props>();
+const emit = defineEmits(['close', 'blablabla']) 
 const inputedValues = reactive([]);
 
 //TODO: Implement submit form
 async function submitForm(e: Event) {
   e.preventDefault();
-
-  // let formBody: string[] = [];
-
-  // for (let i = 0; i < props.inputForm.length; i++) {
-  //   if (typeof props.inputForm[i] === "object") {
-  //     formBody.push(
-  //       encodeURIComponent(props.inputForm[i].field) +
-  //         "=" +
-  //         encodeURIComponent(inputedValues[i])
-  //     );
-  //   }
-  // }
-  // let formBodyString = formBody.join("&");
-
   let formBody = {};
   for (let i = 0; i < props.inputForm.length; i++) {
     const field: string = props.inputForm[i].field;
@@ -43,6 +30,8 @@ async function submitForm(e: Event) {
     },
     body: JSON.stringify(formBody),
   });
+
+
 }
 </script>
 <template>
@@ -66,7 +55,7 @@ async function submitForm(e: Event) {
           </div>
 
           <div class="left-align">
-            <button type="submit" class="btn btn-primary" @click="$emit('close')">
+            <button type="submit" class="btn btn-primary" @click="$emit('blablabla')">
               Submit
             </button>
             <button class="btn btn-primary m-2" type="button" @click="$emit('close')">

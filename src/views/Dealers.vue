@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, Ref } from "vue";
+import { ref, onMounted, Ref, watch } from "vue";
 import {
   getAccessToken,
   getRefreshToken,
@@ -96,6 +96,12 @@ function refreshTokens() {
     })
     .then(() => console.log(getAccessToken()));
 }
+
+
+watch(isOpen, async () => {
+  await refreshTable();
+  console.log("isOpen has changed");
+})
 </script>
 
 <template>
@@ -107,11 +113,9 @@ function refreshTokens() {
   <CreateRowModal
     :open="isOpen"
     @close="
-      {
         isOpen = !isOpen;
-        refreshTable();
-      }
     "
+    @blablabla="isOpen = !isOpen;"
     :submitUrl="submitUrl"
     :inputForm="inputForm"
   >
