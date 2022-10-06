@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { propsToAttrMap } from "@vue/shared";
-import { onMounted, ref, reactive } from "vue";
-
+import { reactive } from "vue";
 import { getAccessToken } from "../global";
 
 interface Props {
@@ -10,11 +8,10 @@ interface Props {
   inputForm: Array<any>;
 }
 const props = defineProps<Props>();
-const emit = defineEmits(['close', 'blablabla']) 
+const emit = defineEmits(["close", "blablabla"]);
 const inputedValues = reactive([]);
 
-//TODO: Implement submit form
-async function submitForm(e: Event) {
+async function onSubmit(e: Event) {
   e.preventDefault();
   let formBody = {};
   for (let i = 0; i < props.inputForm.length; i++) {
@@ -31,15 +28,19 @@ async function submitForm(e: Event) {
     body: JSON.stringify(formBody),
   });
 
-
+  emit("close");
 }
+
+const onClose = () => {
+  emit("close");
+};
 </script>
 <template>
   <div class="vue-modal" v-show="open">
     <div class="vue-modal-inner">
       <div id="create-row-content" class="vue-modal-content">
         <slot />
-        <form v-on:submit="submitForm">
+        <form v-on:submit="onSubmit">
           <div
             class="m-3"
             v-for="(inputFormPart, counter) in this.inputForm"
@@ -55,10 +56,8 @@ async function submitForm(e: Event) {
           </div>
 
           <div class="left-align">
-            <button type="submit" class="btn btn-primary" @click="$emit('blablabla')">
-              Submit
-            </button>
-            <button class="btn btn-primary m-2" type="button" @click="$emit('close')">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button class="btn btn-primary m-2" type="button" @click="onClose">
               Close
             </button>
           </div>

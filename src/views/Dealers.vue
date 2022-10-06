@@ -97,11 +97,9 @@ function refreshTokens() {
     .then(() => console.log(getAccessToken()));
 }
 
-
-watch(isOpen, async () => {
-  await refreshTable();
-  console.log("isOpen has changed");
-})
+watch(isOpen, () => {
+  refreshTable();
+});
 </script>
 
 <template>
@@ -112,10 +110,7 @@ watch(isOpen, async () => {
 
   <CreateRowModal
     :open="isOpen"
-    @close="
-        isOpen = !isOpen;
-    "
-    @blablabla="isOpen = !isOpen;"
+    @close="isOpen = !isOpen"
     :submitUrl="submitUrl"
     :inputForm="inputForm"
   >
@@ -129,8 +124,8 @@ watch(isOpen, async () => {
     row-key="dealer"
     selection="multiple"
     v-model:selected="selected"
-  ></q-table>
-  <div class="q-mt-md">Selected: {{ JSON.stringify(selected) }}</div>
+  >
+  </q-table>
 </template>
 
 <style scoped>
