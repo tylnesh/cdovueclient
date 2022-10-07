@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 import { getAccessToken } from "../global";
 
 interface Props {
@@ -7,9 +7,24 @@ interface Props {
   submitUrl: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputForm: Array<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selected: Array<any>;
 }
 const props = defineProps<Props>();
 const emit = defineEmits(["close"]);
+//const inputedValues = reactive([]);
+
+const computedValues = computed(() => {
+  let values = [];
+  for (const selected in props.selected) {
+    // for (const inputFormPart in props.inputForm[0]) {
+    //   values.push(inputFormPart);
+    // }
+    values.push(selected);
+  }
+  return values;
+});
+
 const inputedValues = reactive([]);
 
 async function onSubmit(e: Event) {
@@ -40,18 +55,32 @@ const onClose = () => {
     <div class="vue-modal-inner">
       <div id="create-row-content" class="vue-modal-content">
         <slot />
+        <p>props.selected: {{ props.selected }}</p>
+        <p>props.inputForm: {{ props.inputForm }}</p>
+        <p>computedValues: {{ computedValues }}</p>
         <form v-on:submit="onSubmit">
           <div
-            class="m-3"
-            v-for="(inputFormPart, counter) in this.inputForm"
-            v-bind:key="counter"
+            class="m-5 black-background"
+            v-for="(selected, selectedCounter) in props.selected"
+            v-bind:key="selectedCounter"
           >
-            <label for="name" class="form-label">{{ inputFormPart.label }}</label>
-            <input
-              type="text"
-              class="form-control"
-              id="inputFormPart.name"
-              v-model="inputedValues[counter]"
+            <div
+              class="m-3"
+              v-for="(inputFormPart, inputCounter) in props.inputForm"
+              v-bind:key="inputCounter"
+            >
+              <label for="name" class="form-label">{{ inputFormPart.label }}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="inputFormPart.name"
+                v-model="inputedValues[inputCounter]"
+              />
+            </div>
+            <hr
+              v-if="
+                props.selected.length > 1 && selectedCounter < props.selected.length - 1
+              "
             />
           </div>
 

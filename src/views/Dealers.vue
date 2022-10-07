@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, Ref, watch } from "vue";
-import {
-  getAccessToken,
-  getRefreshToken,
-  setAccessToken,
-  setRefreshToken,
-} from "../global";
-
-import { router } from "../main";
+import { getAccessToken, refreshTokens } from "../global";
 
 import CreateRowModal from "../components/CreateRowModal.vue";
 import { left } from "@popperjs/core/lib/enums";
+import EditRowModal from "../components/EditRowModal.vue";
 
 const rows: Ref<Array<{ id: number; dealer: string; slug: string }>> = ref([]);
+
 const columns = [
   {
     name: "dealer",
@@ -41,9 +36,11 @@ const columns = [
 
 const selected = ref([]);
 
-const isOpen = ref(false);
+const createIsOpen = ref(false);
+const editIsOpen = ref(false);
 
-const submitUrl = ref("http://localhost:8080/api/dealer/post");
+const createUrl = ref("http://localhost:8080/api/dealer/post");
+const editUrl = ref("http://localhost:8080/api/dealer/post");
 
 const inputForm = ref([
   {
@@ -78,44 +75,34 @@ async function refreshTable() {
   }
 }
 
-function refreshTokens() {
-  fetch("http://localhost:8080/api/token/refresh", {
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + getRefreshToken(),
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.error_message === undefined) {
-        setAccessToken(data.access_token);
-        setRefreshToken(data.refresh_token);
-      } else {
-        router.push({ path: "/login" });
-      }
-    })
-    .then(() => console.log(getAccessToken()));
-}
-
-watch(isOpen, () => {
-  refreshTable();
+watch(createIsOpen, async () => {
+  await refreshTable();
 });
 </script>
 
 <template>
   <button class="btn btn-secondary ms-2 mb-2" @click="refreshTable">Refresh</button>
-  <button class="btn btn-primary ms-2 mb-2" @click="isOpen = true">New</button>
-  <!-- <button class="btn btn-primary ms-2 mb-2" @click="editRow">Edit</button>
-  <button class="btn btn-primary ms-2 mb-2" @click="deleteRow">Delete</button> -->
-
+  <button class="btn btn-primary ms-2 mb-2" @click="createIsOpen = true">New</button>
+  <button class="btn btn-primary ms-2 mb-2" @click="editIsOpen = true">Edit</button>
+  <!-- <button class="btn btn-primary ms-2 mb-2" @click="deleteRow">Delete</button> -->
   <CreateRowModal
-    :open="isOpen"
-    @close="isOpen = !isOpen"
-    :submitUrl="submitUrl"
+    :open="createIsOpen"
+    @close="createIsOpen = !createIsOpen"
+    :submitUrl="createUrl"
     :inputForm="inputForm"
   >
     <h3>New dealer</h3>
   </CreateRowModal>
+
+  <EditRowModal
+    :open="editIsOpen"
+    @close="editIsOpen = !editIsOpen"
+    :submitUrl="editUrl"
+    :inputForm="inputForm"
+    :selected="selected"
+  >
+    <h3>Edit dealer</h3>
+  </EditRowModal>
 
   <q-table
     title="Dealers"
