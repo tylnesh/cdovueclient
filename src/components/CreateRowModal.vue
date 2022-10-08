@@ -28,6 +28,9 @@ async function onSubmit(e: Event) {
     },
     body: JSON.stringify(formBody),
   });
+
+  inputedValues.splice(0);
+
   emit("close");
 }
 
