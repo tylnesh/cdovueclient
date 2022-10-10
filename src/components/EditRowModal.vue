@@ -15,12 +15,16 @@ const emit = defineEmits(["close"]);
 //const inputedValues = reactive([]);
 
 const computedValues = computed(() => {
+  let formKeys: Array<string> = [];
   let values = [];
-  for (const selected in props.selected) {
-    // for (const inputFormPart in props.inputForm[0]) {
-    //   values.push(inputFormPart);
-    // }
-    values.push(selected);
+  for (let i = 0; i < props.inputForm.length; i++) {
+    formKeys.push(props.inputForm[i]["field"]);
+  }
+
+  for (let i = 0; i < props.selected.length; i++) {
+    for (let j = 0; j < formKeys.length; j++) {
+      values.push(props.selected[i][formKeys[j]]);
+    }
   }
   return values;
 });
@@ -58,6 +62,7 @@ const onClose = () => {
         <p>props.selected: {{ props.selected }}</p>
         <p>props.inputForm: {{ props.inputForm }}</p>
         <p>computedValues: {{ computedValues }}</p>
+
         <form v-on:submit="onSubmit">
           <div
             class="m-5 black-background"
@@ -74,7 +79,9 @@ const onClose = () => {
                 type="text"
                 class="form-control"
                 id="inputFormPart.name"
-                v-model="inputedValues[inputCounter]"
+                v-model="
+                  computedValues[inputCounter + selectedCounter * props.inputForm.length]
+                "
               />
             </div>
             <hr
@@ -83,7 +90,6 @@ const onClose = () => {
               "
             />
           </div>
-
           <div class="left-align">
             <button type="submit" class="btn btn-primary">Submit</button>
             <button class="btn btn-primary m-2" type="button" @click="onClose">
