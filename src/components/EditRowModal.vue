@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue";
+import { computed } from "vue";
 import { getAccessToken } from "../global";
 
 interface Props {
@@ -29,18 +29,23 @@ const computedValues = computed(() => {
   return values;
 });
 
-const inputedValues = reactive([]);
-
 async function onSubmit(e: Event) {
   e.preventDefault();
   let formBody = {};
-  for (let i = 0; i < props.inputForm.length; i++) {
-    const field: string = props.inputForm[i].field;
-    Object.assign(formBody, { [field]: inputedValues[i] });
+
+  if (props.selected.length > 1) {
+    return;
+  } else {
+    Object.assign(formBody, { id: props.selected[0]["id"] });
+    for (let i = 0; i < props.inputForm.length; i++) {
+      const field: string = props.inputForm[i].field;
+      Object.assign(formBody, { [field]: computedValues.value[i] });
+    }
   }
 
+  console.log(formBody);
   fetch(props.submitUrl, {
-    method: "POST",
+    method: "PUT",
     headers: {
       Authorization: "Bearer " + getAccessToken(),
       "Content-Type": "application/json",
@@ -59,9 +64,6 @@ const onClose = () => {
     <div class="vue-modal-inner">
       <div id="create-row-content" class="vue-modal-content">
         <slot />
-        <p>props.selected: {{ props.selected }}</p>
-        <p>props.inputForm: {{ props.inputForm }}</p>
-        <p>computedValues: {{ computedValues }}</p>
 
         <form v-on:submit="onSubmit">
           <div
@@ -69,6 +71,17 @@ const onClose = () => {
             v-for="(selected, selectedCounter) in props.selected"
             v-bind:key="selectedCounter"
           >
+            <div class="m-3">
+              <label for="selectedId" class="form-label">ID</label>
+              <input
+                type="text"
+                id="selectedId"
+                class="form-control"
+                v-model="selected['id']"
+                readonly
+              />
+            </div>
+
             <div
               class="m-3"
               v-for="(inputFormPart, inputCounter) in props.inputForm"

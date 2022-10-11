@@ -40,7 +40,7 @@ const createIsOpen = ref(false);
 const editIsOpen = ref(false);
 
 const createUrl = ref("http://localhost:8080/api/dealer/post");
-const editUrl = ref("http://localhost:8080/api/dealer/post");
+const editUrl = ref("http://localhost:8080/api/dealer/update");
 
 const inputForm = ref([
   {
