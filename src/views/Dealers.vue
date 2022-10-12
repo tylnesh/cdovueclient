@@ -38,6 +38,7 @@ const selected = ref([]);
 
 const createIsOpen = ref(false);
 const editIsOpen = ref(false);
+const deleteIsOpen = ref(false);
 
 const createUrl = ref("http://localhost:8080/api/dealer/post");
 const editUrl = ref("http://localhost:8080/api/dealer/update");
@@ -84,7 +85,7 @@ watch(createIsOpen, async () => {
   <button class="btn btn-secondary ms-2 mb-2" @click="refreshTable">Refresh</button>
   <button class="btn btn-primary ms-2 mb-2" @click="createIsOpen = true">New</button>
   <button class="btn btn-primary ms-2 mb-2" @click="editIsOpen = true">Edit</button>
-  <!-- <button class="btn btn-primary ms-2 mb-2" @click="deleteRow">Delete</button> -->
+  <button class="btn btn-primary ms-2 mb-2" @click="deleteIsOpen = true">Delete</button>
   <CreateRowModal
     :open="createIsOpen"
     @close="createIsOpen = !createIsOpen"
@@ -103,6 +104,8 @@ watch(createIsOpen, async () => {
   >
     <h3>Edit dealer</h3>
   </EditRowModal>
+
+  <DeleteRowModal> </DeleteRowModal>
 
   <q-table
     title="Dealers"
