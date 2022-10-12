@@ -33,9 +33,25 @@ async function onSubmit(e: Event) {
   e.preventDefault();
   let formBody = {};
 
+  let url = "";
+
   if (props.selected.length > 1) {
-    return;
+    url = props.submitUrl + "/multi";
+    let formArray = [];
+    for (let i = 0; i < props.selected.length; i++) {
+      let tempFormBody = {};
+      Object.assign(tempFormBody, { id: props.selected[i]["id"] });
+      for (let j = 0; j < props.inputForm.length; j++) {
+        const field: string = props.inputForm[j].field;
+        Object.assign(tempFormBody, {
+          [field]: computedValues.value[j + i * props.inputForm.length],
+        });
+      }
+      formArray.push(tempFormBody);
+      Object.assign(formBody, { dealerList: formArray });
+    }
   } else {
+    url = props.submitUrl;
     Object.assign(formBody, { id: props.selected[0]["id"] });
     for (let i = 0; i < props.inputForm.length; i++) {
       const field: string = props.inputForm[i].field;
@@ -44,7 +60,7 @@ async function onSubmit(e: Event) {
   }
 
   console.log(formBody);
-  fetch(props.submitUrl, {
+  fetch(url, {
     method: "PUT",
     headers: {
       Authorization: "Bearer " + getAccessToken(),
