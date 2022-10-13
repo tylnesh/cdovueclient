@@ -7,7 +7,7 @@ import CdoAppHeader from "./components/CdoAppHeader.vue";
   <router-view></router-view>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 body {
   background-color: aqua;
   color: black;

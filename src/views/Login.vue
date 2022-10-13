@@ -33,8 +33,6 @@ async function submitLogin(e: Event) {
     })
     .then(() => console.log(getAccessToken()));
 }
-
-const isOpen = ref(false);
 </script>
 
 <template>
@@ -66,7 +64,7 @@ const isOpen = ref(false);
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .center {
   text-align: center;
 }

@@ -38,6 +38,17 @@ const refreshTokens = async () => {
       }
 };
 
+const sendToBackend = (url:string, method:string, formBody:string) => {
+  fetch(url, {
+    method: method,
+    headers: {
+      Authorization: "Bearer " + getAccessToken(),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formBody),
+  });
+};
+
 export {
-  setAccessToken, getAccessToken, setRefreshToken, getRefreshToken, refreshTokens
+  setAccessToken, getAccessToken, setRefreshToken, getRefreshToken, refreshTokens, sendToBackend
 };

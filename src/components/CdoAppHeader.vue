@@ -13,7 +13,7 @@
   </nav>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .logo {
   height: 5em;
   padding: 0.5em;

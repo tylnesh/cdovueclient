@@ -80,6 +80,12 @@ async function refreshTable() {
 watch(createIsOpen, async () => {
   await refreshTable();
 });
+watch(editIsOpen, async () => {
+  await refreshTable();
+});
+watch(deleteIsOpen, async () => {
+  await refreshTable();
+});
 </script>
 
 <template>
@@ -126,7 +132,7 @@ watch(createIsOpen, async () => {
   </q-table>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .center {
   text-align: center;
 }

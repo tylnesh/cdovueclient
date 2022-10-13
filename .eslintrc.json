@@ -28,10 +28,10 @@
         }],
         "vue/max-attributes-per-line": [2, {
             "singleline": {
-                "max": 3
+                "max": 4
             },
             "multiline": {
-                "max": 3
+                "max": 4
             }
         }],
         "semi": [2, "always"]
