@@ -5,8 +5,7 @@ import { getAccessToken } from "../global";
 interface Props {
   open: boolean;
   submitUrl: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  inputForm: Array<any>;
+  
 }
 const props = defineProps<Props>();
 const emit = defineEmits(["close"]);
