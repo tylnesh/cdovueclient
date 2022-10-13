@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, Ref, watch } from "vue";
-import { getAccessToken, refreshTokens } from "../global";
+import { getAccessToken, refreshTokens } from "../middleware";
 
 import CreateRowModal from "../components/CreateRowModal.vue";
 import { left } from "@popperjs/core/lib/enums";

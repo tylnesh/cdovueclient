@@ -6,7 +6,7 @@ import {
   getAccessToken,
   setRefreshToken,
   getRefreshToken,
-} from "../global";
+} from "../middleware";
 
 const email = ref("");
 const pass = ref("");

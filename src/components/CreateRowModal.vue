@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import { getAccessToken } from "../global";
+import { getAccessToken } from "../middleware";
 
 interface Props {
   open: boolean;

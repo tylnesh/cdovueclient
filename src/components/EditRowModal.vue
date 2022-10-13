@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { getAccessToken } from "../global";
+import { getAccessToken } from "../middleware";
 
 interface Props {
   open: boolean;
@@ -29,7 +29,7 @@ const computedValues = computed(() => {
   return values;
 });
 
-async function onSubmit(e: Event) {
+const onSubmit = async (e: Event) => {
   e.preventDefault();
   let formBody = {};
 
@@ -69,7 +69,7 @@ async function onSubmit(e: Event) {
     body: JSON.stringify(formBody),
   });
   emit("close");
-}
+};
 
 const onClose = () => {
   emit("close");

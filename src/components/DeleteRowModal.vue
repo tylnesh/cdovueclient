@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import { getAccessToken } from "../global";
+import { getAccessToken } from "../middleware";
 
 interface Props {
   open: boolean;
   submitUrl: string;
-  
 }
 const props = defineProps<Props>();
 const emit = defineEmits(["close"]);
@@ -13,22 +12,6 @@ const inputedValues = reactive([]);
 
 async function onSubmit(e: Event) {
   e.preventDefault();
-  let formBody = {};
-  for (let i = 0; i < props.inputForm.length; i++) {
-    const field: string = props.inputForm[i].field;
-    Object.assign(formBody, { [field]: inputedValues[i] });
-  }
-
-  fetch(props.submitUrl, {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer " + getAccessToken(),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formBody),
-  });
-
-  inputedValues.splice(0);
 
   emit("close");
 }
