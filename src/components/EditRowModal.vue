@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { getAccessToken } from "../middleware";
+import { sendToBackend } from "../middleware";
 
 interface Props {
   open: boolean;
@@ -12,7 +12,6 @@ interface Props {
 }
 const props = defineProps<Props>();
 const emit = defineEmits(["close"]);
-//const inputedValues = reactive([]);
 
 const computedValues = computed(() => {
   let formKeys: Array<string> = [];
@@ -29,10 +28,8 @@ const computedValues = computed(() => {
   return values;
 });
 
-const onSubmit = async (e: Event) => {
-  e.preventDefault();
+const submitForm = async () => {
   let formBody = {};
-
   let url = "";
 
   if (props.selected.length > 1) {
@@ -59,19 +56,11 @@ const onSubmit = async (e: Event) => {
     }
   }
 
-  console.log(formBody);
-  fetch(url, {
-    method: "PUT",
-    headers: {
-      Authorization: "Bearer " + getAccessToken(),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formBody),
-  });
-  emit("close");
+  sendToBackend(url, "PUT", JSON.stringify(formBody));
+  closeModal();
 };
 
-const onClose = () => {
+const closeModal = () => {
   emit("close");
 };
 </script>
@@ -81,7 +70,7 @@ const onClose = () => {
       <div id="create-row-content" class="vue-modal-content">
         <slot />
 
-        <form v-on:submit="onSubmit">
+        <form>
           <div
             class="m-5 black-background"
             v-for="(selected, selectedCounter) in props.selected"
@@ -120,8 +109,10 @@ const onClose = () => {
             />
           </div>
           <div class="left-align">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button class="btn btn-primary m-2" type="button" @click="onClose">
+            <button type="button" class="btn btn-primary" @click="submitForm">
+              Submit
+            </button>
+            <button class="btn btn-primary m-2" type="button" @click="closeModal">
               Close
             </button>
           </div>
