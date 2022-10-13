@@ -42,6 +42,7 @@ const deleteIsOpen = ref(false);
 
 const createUrl = ref("http://localhost:8080/api/dealer/post");
 const editUrl = ref("http://localhost:8080/api/dealer/update");
+const deleteUrl = ref("http://localhost:8080/api/dealer/delete");
 
 const inputForm = ref([
   {
@@ -102,10 +103,17 @@ watch(createIsOpen, async () => {
     :inputForm="inputForm"
     :selected="selected"
   >
-    <h3>Edit dealer</h3>
+    <h3>Edit dealer(s)</h3>
   </EditRowModal>
 
-  <DeleteRowModal> </DeleteRowModal>
+  <DeleteRowModal
+    :open="deleteIsOpen"
+    @close="deleteIsOpen = !deleteIsOpen"
+    :submitUrl="deleteUrl"
+    :selected="selected"
+  >
+    <h3>Delete dealer(s)</h3>
+  </DeleteRowModal>
 
   <q-table
     title="Dealers"
