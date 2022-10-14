@@ -45,7 +45,7 @@ const sendToBackend = (url:string, method:string, formBody:string) => {
       Authorization: "Bearer " + getAccessToken(),
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(formBody),
+    body: formBody,
   });
 };
 

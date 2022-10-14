@@ -17,17 +17,17 @@ import '@quasar/extras/fontawesome-v5/fontawesome-v5.css'
 import '@quasar/extras/bootstrap-icons/bootstrap-icons.css'
 
 // Import Quasar css
-import 'quasar/src/css/index.sass' 
+import 'quasar/src/css/index.sass' ;
 
-import Home from './views/Home.vue'
-import Login from './views/Login.vue'
-import Dealers from './views/Dealers.vue'
+import Home from './views/Home.vue';
+import Login from './views/Login.vue';
+import Dealers from './views/Dealers.vue';
 
 
 
-import App from './App.vue'
-import './style.css'
-import { defaultModifiers } from "@popperjs/core/lib/popper-lite"
+import App from './App.vue';
+import './style.css';
+import { defaultModifiers } from "@popperjs/core/lib/popper-lite";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -36,13 +36,13 @@ const router = createRouter({
     {path: '/login', name: 'Login', component: Login},
     {path: '/dealers', name: "Dealers", component: Dealers}
   ]
-})
+});
 
 export { router };
-const app = createApp(App)
+const app = createApp(App);
 app.use(Quasar, {
   plugins: {}, // import Quasar plugins and add here
   iconSet: quasarIconSet,
-})
-app.use(router)
-app.mount('#app')
+});
+app.use(router);
+app.mount('#app');

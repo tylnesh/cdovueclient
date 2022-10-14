@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { getAccessToken } from "../middleware";
+import { sendToBackend } from "../middleware";
 
 interface Props {
   open: boolean;
   submitUrl: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selected: Array<any>;
 }
 const props = defineProps<Props>();
 const emit = defineEmits(["close"]);
-const inputedValues = reactive([]);
 
-async function onSubmit(e: Event) {
-  e.preventDefault();
+async function submit() {
+  let formBody = {};
+  Object.assign(formBody, { dealerList: props.selected });
 
+  await sendToBackend(props.submitUrl + "/multi", "DELETE", JSON.stringify(formBody));
   emit("close");
 }
 
-const onClose = () => {
+const closeModal = () => {
   emit("close");
 };
 </script>
@@ -25,28 +27,11 @@ const onClose = () => {
     <div class="vue-modal-inner">
       <div id="create-row-content" class="vue-modal-content">
         <slot />
-        <form v-on:submit="onSubmit">
-          <div
-            class="m-3"
-            v-for="(inputFormPart, counter) in this.inputForm"
-            v-bind:key="counter"
-          >
-            <label for="name" class="form-label">{{ inputFormPart.label }}</label>
-            <input
-              type="text"
-              class="form-control"
-              id="inputFormPart.name"
-              v-model="inputedValues[counter]"
-            />
-          </div>
-
-          <div class="left-align">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button class="btn btn-primary m-2" type="button" @click="onClose">
-              Close
-            </button>
-          </div>
-        </form>
+        <p>Are you sure you want to delete {{ props.selected.length }} item(s)</p>
+        <button type="button" class="btn btn-primary" @click="submit">Submit</button>
+        <button class="btn btn-primary m-2" type="button" @click="closeModal">
+          Close
+        </button>
       </div>
     </div>
   </div>

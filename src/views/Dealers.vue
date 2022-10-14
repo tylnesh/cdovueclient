@@ -5,6 +5,7 @@ import { getAccessToken, refreshTokens } from "../middleware";
 import CreateRowModal from "../components/CreateRowModal.vue";
 import { left } from "@popperjs/core/lib/enums";
 import EditRowModal from "../components/EditRowModal.vue";
+import DeleteRowModal from "../components/DeleteRowModal.vue";
 
 const rows: Ref<Array<{ id: number; dealer: string; slug: string }>> = ref([]);
 
@@ -78,13 +79,22 @@ async function refreshTable() {
 }
 
 watch(createIsOpen, async () => {
-  await refreshTable();
+  if (!createIsOpen.value) {
+    await refreshTable();
+    selected.value = [];
+  }
 });
 watch(editIsOpen, async () => {
-  await refreshTable();
+  if (!editIsOpen.value) {
+    await refreshTable();
+    selected.value = [];
+  }
 });
 watch(deleteIsOpen, async () => {
-  await refreshTable();
+  if (!deleteIsOpen.value) {
+    await refreshTable();
+    selected.value = [];
+  }
 });
 </script>
 
