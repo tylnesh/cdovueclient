@@ -128,6 +128,8 @@ const closeModal = () => {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .vue-modal {
@@ -136,13 +138,15 @@ const closeModal = () => {
   left: 0;
   width: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 }
 
 .vue-modal-inner {
   max-width: 500px;
+  height: 80vh;
+  overflow-x: hidden;
+  overflow-y: auto;
   margin: 2rem auto;
 }
 
@@ -153,5 +157,8 @@ const closeModal = () => {
   background-clip: padding-box;
   border-radius: 0.3rem;
   padding: 1rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 </style>

@@ -99,50 +99,56 @@ watch(deleteIsOpen, async () => {
 </script>
 
 <template>
-  <button class="btn btn-secondary ms-2 mb-2" @click="refreshTable">Refresh</button>
-  <button class="btn btn-primary ms-2 mb-2" @click="createIsOpen = true">New</button>
-  <button class="btn btn-primary ms-2 mb-2" @click="editIsOpen = true">Edit</button>
-  <button class="btn btn-primary ms-2 mb-2" @click="deleteIsOpen = true">Delete</button>
-  <CreateRowModal
-    :open="createIsOpen"
-    @close="createIsOpen = !createIsOpen"
-    :submitUrl="createUrl"
-    :inputForm="inputForm"
-  >
-    <h3>New dealer</h3>
-  </CreateRowModal>
+  <div class="main-div">
+    <button class="btn btn-secondary ms-2 mb-2" @click="refreshTable">Refresh</button>
+    <button class="btn btn-primary ms-2 mb-2" @click="createIsOpen = true">New</button>
+    <button class="btn btn-primary ms-2 mb-2" @click="editIsOpen = true">Edit</button>
+    <button class="btn btn-primary ms-2 mb-2" @click="deleteIsOpen = true">Delete</button>
+    <CreateRowModal
+      :open="createIsOpen"
+      @close="createIsOpen = !createIsOpen"
+      :submitUrl="createUrl"
+      :inputForm="inputForm"
+    >
+      <h3>New dealer</h3>
+    </CreateRowModal>
 
-  <EditRowModal
-    :open="editIsOpen"
-    @close="editIsOpen = !editIsOpen"
-    :submitUrl="editUrl"
-    :inputForm="inputForm"
-    :selected="selected"
-  >
-    <h3>Edit dealer(s)</h3>
-  </EditRowModal>
+    <EditRowModal
+      :open="editIsOpen"
+      @close="editIsOpen = !editIsOpen"
+      :submitUrl="editUrl"
+      :inputForm="inputForm"
+      :selected="selected"
+    >
+      <h3>Edit dealer(s)</h3>
+    </EditRowModal>
 
-  <DeleteRowModal
-    :open="deleteIsOpen"
-    @close="deleteIsOpen = !deleteIsOpen"
-    :submitUrl="deleteUrl"
-    :selected="selected"
-  >
-    <h3>Delete dealer(s)</h3>
-  </DeleteRowModal>
+    <DeleteRowModal
+      :open="deleteIsOpen"
+      @close="deleteIsOpen = !deleteIsOpen"
+      :submitUrl="deleteUrl"
+      :selected="selected"
+    >
+      <h3>Delete dealer(s)</h3>
+    </DeleteRowModal>
 
-  <q-table
-    title="Dealers"
-    :rows="rows"
-    :columns="columns"
-    row-key="dealer"
-    selection="multiple"
-    v-model:selected="selected"
-  >
-  </q-table>
+    <q-table
+      title="Dealers"
+      :rows="rows"
+      :columns="columns"
+      row-key="dealer"
+      selection="multiple"
+      v-model:selected="selected"
+    >
+    </q-table>
+  </div>
 </template>
 
 <style scoped lang="scss">
+.main-div {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 .center {
   text-align: center;
 }
