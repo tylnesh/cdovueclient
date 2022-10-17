@@ -9,6 +9,7 @@
       </router-link>
       <router-link to="/login" class="nav-item"> Login form </router-link>
       <router-link to="/dealers" class="nav-item"> Dealers </router-link>
+      <router-link to="/printers" class="nav-item"> Printers </router-link>
     </div>
   </nav>
 </template>
