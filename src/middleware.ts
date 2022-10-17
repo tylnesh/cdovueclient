@@ -1,6 +1,7 @@
 let $accessToken:string;
 let $refreshToken:string;
 
+import { Ref } from "vue";
 import { router } from "./main";
 
 
@@ -49,6 +50,28 @@ const sendToBackend = async (url:string, method:string, formBody:string) => {
   });
 };
 
+
+
+const refreshTable = async (retrieveUrl:string) => {
+  const request = await fetch(retrieveUrl, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + getAccessToken(),
+    },
+  });
+  if (request.status == 403) {
+    await refreshTokens();
+    return await refreshTable(retrieveUrl);
+  } else {
+    const json = await request.json();
+    return await json["content"];
+  }
+};
+
+
 export {
-  setAccessToken, getAccessToken, setRefreshToken, getRefreshToken, refreshTokens, sendToBackend
+  setAccessToken, getAccessToken, 
+  setRefreshToken, getRefreshToken, 
+  refreshTokens, sendToBackend,
+  refreshTable
 };
