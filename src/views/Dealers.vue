@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, Ref, watch } from "vue";
-import { getAccessToken, refreshTokens } from "../middleware";
+import { refreshTable } from "../middleware";
 
 import CreateRowModal from "../components/CreateRowModal.vue";
 import { left } from "@popperjs/core/lib/enums";
@@ -41,8 +41,9 @@ const createIsOpen = ref(false);
 const editIsOpen = ref(false);
 const deleteIsOpen = ref(false);
 
+const retrieveUrl = ref("http://localhost:8080/api/dealer/");
 const createUrl = ref("http://localhost:8080/api/dealer/post");
-const editUrl = ref("http://localhost:8080/api/dealer/update");
+const updateUrl = ref("http://localhost:8080/api/dealer/update");
 const deleteUrl = ref("http://localhost:8080/api/dealer/delete");
 
 const inputForm = ref([
@@ -59,39 +60,43 @@ const inputForm = ref([
 ]);
 
 onMounted(async () => {
-  await refreshTable();
+  await refreshTable(retrieveUrl.value, rows.value);
 });
 
-async function refreshTable() {
-  const request = await fetch("http://localhost:8080/api/dealer", {
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + getAccessToken(),
-    },
-  });
-  if (request.status == 403) {
-    refreshTokens();
-    refreshTable();
-  } else {
-    let json = await request.json();
-    rows.value = await json["content"];
-  }
-}
+const refresh = async () => {
+  await refreshTable(retrieveUrl.value, rows.value);
+};
 
-watch(createIsOpen, () => {
+// async function refreshTable(retrieveUrl:string, rows.value) {
+//   const request = await fetch("http://localhost:8080/api/dealer", {
+//     method: "GET",
+//     headers: {
+//       Authorization: "Bearer " + getAccessToken(),
+//     },
+//   });
+//   if (request.status == 403) {
+//     refreshTokens();
+//     refreshTable();
+//   } else {
+//     let json = await request.json();
+//     rows.value = await json["content"];
+//   }
+// }
+
+watch(createIsOpen, async () => {
   if (!createIsOpen.value) {
-    refreshTable();
+    await refreshTable(retrieveUrl.value, rows.value);
   }
 });
 watch(editIsOpen, async () => {
   if (!editIsOpen.value) {
-    refreshTable();
+    await refreshTable(retrieveUrl.value, rows.value);
     selected.value = [];
   }
 });
 watch(deleteIsOpen, async () => {
   if (!deleteIsOpen.value) {
-    refreshTable();
+    await refreshTable(retrieveUrl.value, rows.value);
     selected.value = [];
   }
 });
@@ -99,7 +104,7 @@ watch(deleteIsOpen, async () => {
 
 <template>
   <div class="main-div">
-    <button class="btn btn-secondary ms-2 mb-2" @click="refreshTable">Refresh</button>
+    <button class="btn btn-secondary ms-2 mb-2" @click="refresh">Refresh</button>
     <button class="btn btn-primary ms-2 mb-2" @click="createIsOpen = true">New</button>
     <button class="btn btn-primary ms-2 mb-2" @click="editIsOpen = true">Edit</button>
     <button class="btn btn-primary ms-2 mb-2" @click="deleteIsOpen = true">Delete</button>
@@ -115,7 +120,7 @@ watch(deleteIsOpen, async () => {
     <EditRowModal
       :open="editIsOpen"
       @close="editIsOpen = !editIsOpen"
-      :submitUrl="editUrl"
+      :submitUrl="updateUrl"
       :inputForm="inputForm"
       :selected="selected"
     >
