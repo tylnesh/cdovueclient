@@ -38,8 +38,8 @@ const refreshTokens = async () => {
       }
 };
 
-const sendToBackend = (url:string, method:string, formBody:string) => {
-  fetch(url, {
+const sendToBackend = async (url:string, method:string, formBody:string) => {
+  await fetch(url, {
     method: method,
     headers: {
       Authorization: "Bearer " + getAccessToken(),

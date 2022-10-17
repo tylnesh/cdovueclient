@@ -56,7 +56,7 @@ const submitForm = async () => {
     }
   }
 
-  sendToBackend(url, "PUT", JSON.stringify(formBody));
+  await sendToBackend(url, "PUT", JSON.stringify(formBody));
   closeModal();
 };
 

@@ -78,21 +78,20 @@ async function refreshTable() {
   }
 }
 
-watch(createIsOpen, async () => {
+watch(createIsOpen, () => {
   if (!createIsOpen.value) {
-    await refreshTable();
-    selected.value = [];
+    refreshTable();
   }
 });
 watch(editIsOpen, async () => {
   if (!editIsOpen.value) {
-    await refreshTable();
+    refreshTable();
     selected.value = [];
   }
 });
 watch(deleteIsOpen, async () => {
   if (!deleteIsOpen.value) {
-    await refreshTable();
+    refreshTable();
     selected.value = [];
   }
 });
