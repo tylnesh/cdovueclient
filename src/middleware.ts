@@ -1,7 +1,7 @@
 let $accessToken:string;
 let $refreshToken:string;
 
-import { Ref } from "vue";
+import { Ref, ref } from "vue";
 import { router } from "./main";
 
 
@@ -29,7 +29,6 @@ const refreshTokens = async () => {
       Authorization: "Bearer " + getRefreshToken(),
     },
   });
-
   const data = await request.json();
   if (data.error_message === undefined) {
         setAccessToken(data.access_token);
@@ -62,10 +61,27 @@ const refreshTable = async (retrieveUrl:string):  Promise<any> => {
   });
   if (request.status == 403) {
     await refreshTokens();
-    return await refreshTable(retrieveUrl);
+    //return await refreshTable(retrieveUrl);
   } else {
     const json = await request.json();
-    return await json["content"];
+    const rows: Ref<Array<{ id: number; dealer: string; slug: string }>> = ref([]);
+    const pagination = ref({
+      sortBy: "desc",
+      descending: false,
+      page: 0,
+      rowsPerPage: 20,
+      rowsNumber: 0,
+    });
+
+
+
+    pagination.value.page = await json["number"];
+    pagination.value.rowsPerPage =  await json["size"];
+    pagination.value.rowsNumber = await json["totalElements"];
+    rows.value =  await json["content"];
+
+    const serverData = ref({rows, pagination});
+    return JSON.stringify(serverData.value);
   }
 };
 
