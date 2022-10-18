@@ -60,43 +60,27 @@ const inputForm = ref([
 ]);
 
 onMounted(async () => {
-  await refreshTable(retrieveUrl.value, rows.value);
+  rows.value = await refreshTable(retrieveUrl.value);
 });
 
 const refresh = async () => {
-  await refreshTable(retrieveUrl.value, rows.value);
+  rows.value = await refreshTable(retrieveUrl.value);
 };
-
-// async function refreshTable(retrieveUrl:string, rows.value) {
-//   const request = await fetch("http://localhost:8080/api/dealer", {
-//     method: "GET",
-//     headers: {
-//       Authorization: "Bearer " + getAccessToken(),
-//     },
-//   });
-//   if (request.status == 403) {
-//     refreshTokens();
-//     refreshTable();
-//   } else {
-//     let json = await request.json();
-//     rows.value = await json["content"];
-//   }
-// }
 
 watch(createIsOpen, async () => {
   if (!createIsOpen.value) {
-    await refreshTable(retrieveUrl.value, rows.value);
+    rows.value = await refreshTable(retrieveUrl.value);
   }
 });
 watch(editIsOpen, async () => {
   if (!editIsOpen.value) {
-    await refreshTable(retrieveUrl.value, rows.value);
+    rows.value = await refreshTable(retrieveUrl.value);
     selected.value = [];
   }
 });
 watch(deleteIsOpen, async () => {
   if (!deleteIsOpen.value) {
-    await refreshTable(retrieveUrl.value, rows.value);
+    rows.value = await refreshTable(retrieveUrl.value);
     selected.value = [];
   }
 });

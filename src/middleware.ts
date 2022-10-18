@@ -51,8 +51,9 @@ const sendToBackend = async (url:string, method:string, formBody:string) => {
 };
 
 
-
-const refreshTable = async (retrieveUrl:string) => {
+// Returns Promise<any> because the formatting of the 
+// rows/content varies depending on the specific table
+const refreshTable = async (retrieveUrl:string):  Promise<any> => {
   const request = await fetch(retrieveUrl, {
     method: "GET",
     headers: {
