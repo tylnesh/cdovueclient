@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, Ref, watch, computed } from "vue";
-import { refreshTable } from "../middleware";
+import { refreshTable, sendToBackend } from "../middleware";
 import { left } from "@popperjs/core/lib/enums";
 
 import CreateRowModal from "../components/CreateRowModal.vue";
@@ -12,7 +12,7 @@ const pagination = ref({
   sortBy: "desc",
   descending: false,
   page: 0,
-  rowsPerPage: 10,
+  rowsPerPage: 12,
   rowsNumber: 0,
   pagesNumber: 0,
 });
@@ -50,7 +50,7 @@ const columns = [
 ];
 
 const selected = ref([]);
-const filter = ref("");
+const searchInput = ref("");
 
 const createIsOpen = ref(false);
 const editIsOpen = ref(false);
@@ -108,6 +108,12 @@ const refresh = async () => {
   );
   rows.value = jsonData["rows"];
   pagination.value = jsonData["pagination"];
+};
+
+// TODO: implement sending search json body
+const sendSearchRequest = async () => {
+  let formBody = {};
+  // sendToBackend();
 };
 
 const goFirstPage = async () => {
@@ -173,7 +179,14 @@ watch(deleteIsOpen, async () => {
           </button>
         </div>
         <div class="col-4">
-          <input type="text" id="inputFormPart.name" v-model="filter" />
+          <input
+            type="text"
+            class="form-control"
+            id="searchInput"
+            placeholder="Search"
+            v-model="searchInput"
+            @submit="sendSearchRequest"
+          />
         </div>
       </div>
     </div>
@@ -213,51 +226,9 @@ watch(deleteIsOpen, async () => {
       row-key="dealer"
       selection="multiple"
       v-model:selected="selected"
-      :filter="filter"
       v-model:pagination="pagination"
     >
       <template v-slot:pagination="scope">
-        <!-- <q-btn
-          v-if="scope.pagesNumber > 2"
-          icon="first_page"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="scope.isFirstPage"
-          @click="scope.firstPage"
-
-          <q-btn
-          icon="chevron_left"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="scope.isFirstPage"
-          @click="scope.prevPage"
-        />
-
-        <q-btn
-          icon="chevron_right"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="scope.isLastPage"
-          @click="scope.nextPage"
-        />
-
-        <q-btn
-          v-if="scope.pagesNumber > 2"
-          icon="last_page"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="scope.isLastPage"
-          @click="scope.lastPage"
-        />
-        /> -->
         <q-btn
           v-if="scope.pagesNumber > 2"
           icon="first_page"
