@@ -14,10 +14,7 @@ const pagination = ref({
   page: 0,
   rowsPerPage: 10,
   rowsNumber: 0,
-});
-
-const pagesNumber = computed(() => {
-  return rows.value.length / pagination.value.rowsPerPage;
+  pagesNumber: 0,
 });
 
 const columns = [
@@ -111,8 +108,33 @@ const refresh = async () => {
   );
   rows.value = jsonData["rows"];
   pagination.value = jsonData["pagination"];
-  console.log(jsonData["pagination"]);
 };
+
+const goFirstPage = async () => {
+  pagination.value.page = 0;
+  refresh();
+};
+const goNextPage = async () => {
+  pagination.value.page++;
+  refresh();
+};
+
+const goPrevPage = async () => {
+  pagination.value.page--;
+  refresh();
+};
+
+const goLastPage = async () => {
+  pagination.value.page = pagination.value.pagesNumber - 1;
+  refresh();
+};
+
+const isFirstPage = computed(() => {
+  return pagination.value.page == 0;
+});
+const isLastPage = computed(() => {
+  return pagination.value.page == pagination.value.pagesNumber - 1;
+});
 
 watch(createIsOpen, async () => {
   if (!createIsOpen.value) {
@@ -195,7 +217,7 @@ watch(deleteIsOpen, async () => {
       v-model:pagination="pagination"
     >
       <template v-slot:pagination="scope">
-        <q-btn
+        <!-- <q-btn
           v-if="scope.pagesNumber > 2"
           icon="first_page"
           color="grey-8"
@@ -204,9 +226,8 @@ watch(deleteIsOpen, async () => {
           flat
           :disable="scope.isFirstPage"
           @click="scope.firstPage"
-        />
 
-        <q-btn
+          <q-btn
           icon="chevron_left"
           color="grey-8"
           round
@@ -235,6 +256,48 @@ watch(deleteIsOpen, async () => {
           flat
           :disable="scope.isLastPage"
           @click="scope.lastPage"
+        />
+        /> -->
+        <q-btn
+          v-if="scope.pagesNumber > 2"
+          icon="first_page"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="isFirstPage"
+          @click="goFirstPage"
+        />
+
+        <q-btn
+          icon="chevron_left"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="isFirstPage"
+          @click="goPrevPage"
+        />
+
+        <q-btn
+          icon="chevron_right"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="isLastPage"
+          @click="goNextPage"
+        />
+
+        <q-btn
+          v-if="scope.pagesNumber > 2"
+          icon="last_page"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="isLastPage"
+          @click="goLastPage"
         />
       </template>
     </q-table>

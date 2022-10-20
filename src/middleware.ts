@@ -71,6 +71,7 @@ const refreshTable = async (retrieveUrl:string):  Promise<any> => {
       page: 0,
       rowsPerPage: 20,
       rowsNumber: 0,
+      pagesNumber: 0
     });
 
 
@@ -78,6 +79,7 @@ const refreshTable = async (retrieveUrl:string):  Promise<any> => {
     pagination.value.page = await json["number"];
     pagination.value.rowsPerPage =  await json["size"];
     pagination.value.rowsNumber = await json["totalElements"];
+    pagination.value.pagesNumber = await json["totalPages"];
     rows.value =  await json["content"];
 
     const serverData = ref({rows, pagination});
