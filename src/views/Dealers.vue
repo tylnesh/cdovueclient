@@ -12,8 +12,8 @@ const pagination = ref({
   sortBy: "desc",
   descending: false,
   page: 0,
-  rowsPerPage: 12,
-  rowsNumber: 0,
+  rowsPerPage: 10,
+  rowsNumber: 10,
   pagesNumber: 0,
 });
 
@@ -169,7 +169,7 @@ watch(deleteIsOpen, async () => {
 </script>
 
 <template>
-  <div class="main-div">
+  <div class="main-div q-pa-sm">
     <div class="container">
       <div class="row">
         <div class="col-8">
@@ -227,59 +227,71 @@ watch(deleteIsOpen, async () => {
       <h3>Delete dealer(s)</h3>
     </DeleteRowModal>
 
-    <q-table
-      title="Dealers"
-      :rows="rows"
-      :columns="columns"
-      row-key="dealer"
-      selection="multiple"
-      v-model:selected="selected"
-      v-model:pagination="pagination"
-    >
-      <template v-slot:pagination="scope">
-        <q-btn
-          v-if="scope.pagesNumber > 2"
-          icon="first_page"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="isFirstPage"
-          @click="goFirstPage"
-        />
+    <div class="q-pa-md">
+      <q-table
+        title="Dealers"
+        :rows="rows"
+        :columns="columns"
+        row-key="dealer"
+        selection="multiple"
+        v-model:selected="selected"
+        v-model:pagination="pagination"
+      >
+        <template v-slot:pagination="scope">
+          <select
+            class="form-select"
+            v-model="pagination.rowsPerPage"
+            aria-label="Default select example"
+          >
+            <option selected>Open this select menu</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+          <q-btn
+            v-if="scope.pagesNumber > 2"
+            icon="first_page"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="isFirstPage"
+            @click="goFirstPage"
+          />
 
-        <q-btn
-          icon="chevron_left"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="isFirstPage"
-          @click="goPrevPage"
-        />
+          <q-btn
+            icon="chevron_left"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="isFirstPage"
+            @click="goPrevPage"
+          />
 
-        <q-btn
-          icon="chevron_right"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="isLastPage"
-          @click="goNextPage"
-        />
+          <q-btn
+            icon="chevron_right"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="isLastPage"
+            @click="goNextPage"
+          />
 
-        <q-btn
-          v-if="scope.pagesNumber > 2"
-          icon="last_page"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="isLastPage"
-          @click="goLastPage"
-        />
-      </template>
-    </q-table>
+          <q-btn
+            v-if="scope.pagesNumber > 2"
+            icon="last_page"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="isLastPage"
+            @click="goLastPage"
+          />
+        </template>
+      </q-table>
+    </div>
   </div>
 </template>
 
