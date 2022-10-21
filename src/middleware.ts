@@ -39,7 +39,7 @@ const refreshTokens = async () => {
 };
 
 const sendToBackend = async (url:string, method:string, formBody:string) => {
-  await fetch(url, {
+  const response = await fetch(url, {
     method: method,
     headers: {
       Authorization: "Bearer " + getAccessToken(),
@@ -47,6 +47,9 @@ const sendToBackend = async (url:string, method:string, formBody:string) => {
     },
     body: formBody,
   });
+  const searchResult = {};
+  Object.assign(searchResult, {"searchResult" : await response.json()});
+  return searchResult ;
 };
 
 
@@ -64,7 +67,7 @@ const refreshTable = async (retrieveUrl:string):  Promise<any> => {
     //return await refreshTable(retrieveUrl);
   } else {
     const json = await request.json();
-    const rows: Ref<Array<{ id: number; dealer: string; slug: string }>> = ref([]);
+    const rows: Ref<Array<unknown>> = ref([]);
     const pagination = ref({
       sortBy: "desc",
       descending: false,
@@ -87,10 +90,19 @@ const refreshTable = async (retrieveUrl:string):  Promise<any> => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+const debounce = (func:Function, timeout:number) => {
+  let timer:any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (...args: any) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(self, args); }, timeout);
+  };
+};
 
 export {
   setAccessToken, getAccessToken, 
   setRefreshToken, getRefreshToken, 
   refreshTokens, sendToBackend,
-  refreshTable
+  refreshTable, debounce
 };

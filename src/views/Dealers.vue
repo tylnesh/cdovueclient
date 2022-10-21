@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, Ref, watch, computed } from "vue";
-import { refreshTable, sendToBackend } from "../middleware";
+import { refreshTable, sendToBackend, debounce } from "../middleware";
 import { left } from "@popperjs/core/lib/enums";
 
 import CreateRowModal from "../components/CreateRowModal.vue";
@@ -60,6 +60,7 @@ const retrieveUrl = ref("http://localhost:8080/api/dealer");
 const createUrl = ref("http://localhost:8080/api/dealer/post");
 const updateUrl = ref("http://localhost:8080/api/dealer/update");
 const deleteUrl = ref("http://localhost:8080/api/dealer/delete");
+const searchUrl = ref("http://localhost:8080/api/dealer/search");
 
 const inputForm = ref([
   {
@@ -111,10 +112,16 @@ const refresh = async () => {
 };
 
 // TODO: implement sending search json body
-const sendSearchRequest = async () => {
+const sendSearchRequest = debounce(async () => {
+  console.log("test of debounce");
   let formBody = {};
-  // sendToBackend();
-};
+  Object.assign(formBody, { dealer: searchInput.value });
+  Object.assign(formBody, { slug: searchInput.value });
+
+  const response = await sendToBackend(searchUrl.value, "POST", JSON.stringify(formBody));
+  let responseText = await JSON.stringify(response);
+  rows.value = JSON.parse(responseText)["searchResult"];
+}, 500);
 
 const goFirstPage = async () => {
   pagination.value.page = 0;
@@ -185,6 +192,7 @@ watch(deleteIsOpen, async () => {
             id="searchInput"
             placeholder="Search"
             v-model="searchInput"
+            @keyup="sendSearchRequest"
             @submit="sendSearchRequest"
           />
         </div>
