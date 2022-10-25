@@ -75,20 +75,6 @@ const inputForm = ref([
   },
 ]);
 
-const nextPage = async () => {
-  pagination.value.page++;
-  const jsonData = await JSON.parse(
-    await refreshTable(
-      retrieveUrl.value +
-        "?page=" +
-        pagination.value.page +
-        "&size=" +
-        pagination.value.rowsPerPage
-    )
-  );
-  rows.value = jsonData["rows"];
-  pagination.value = jsonData["pagination"];
-};
 onMounted(async () => {
   const jsonData = await JSON.parse(
     await refreshTable(retrieveUrl.value + "?size=" + pagination.value.rowsPerPage)
@@ -111,7 +97,6 @@ const refresh = async () => {
   pagination.value = jsonData["pagination"];
 };
 
-// TODO: implement sending search json body
 const sendSearchRequest = debounce(async () => {
   console.log("test of debounce");
   let formBody = {};
@@ -239,16 +224,15 @@ watch(deleteIsOpen, async () => {
       />
       <div class="justify-center q-pa-md bg-light">
         <div class="d-flex flex-row">
-          <label for="name" class="form-label">Rows per page:</label>
+          <label for="name" class="form-label m-2 fs-6">Rows per page: </label>
           <select
             class="form-select"
             v-model="pagination.rowsPerPage"
             aria-label="Default select example"
             @change="refresh"
           >
-            <option selected>Open this select menu</option>
             <option value="5">5</option>
-            <option value="10">10</option>
+            <option selected value="10">10</option>
             <option value="20">20</option>
           </select>
           <q-btn
