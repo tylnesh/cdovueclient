@@ -169,12 +169,11 @@ watch(deleteIsOpen, async () => {
 </script>
 
 <template>
-  <div class="main-div q-pa-sm">
+  <div class="q-pa-sm">
     <div class="container">
       <div class="row">
         <div class="col-8">
           <button class="btn btn-secondary ms-2 mb-2" @click="refresh">Refresh</button>
-          <button class="btn btn-secondary ms-2 mb-2" @click="nextPage">Next page</button>
           <button class="btn btn-primary ms-2 mb-2" @click="createIsOpen = true">
             New
           </button>
@@ -227,7 +226,7 @@ watch(deleteIsOpen, async () => {
       <h3>Delete dealer(s)</h3>
     </DeleteRowModal>
 
-    <div class="q-pa-md">
+    <div class="q-pa-md bg-light">
       <q-table
         title="Dealers"
         :rows="rows"
@@ -236,12 +235,16 @@ watch(deleteIsOpen, async () => {
         selection="multiple"
         v-model:selected="selected"
         v-model:pagination="pagination"
-      >
-        <template v-slot:pagination="scope">
+        hide-pagination
+      />
+      <div class="justify-center q-pa-md bg-light">
+        <div class="d-flex flex-row">
+          <label for="name" class="form-label">Rows per page:</label>
           <select
             class="form-select"
             v-model="pagination.rowsPerPage"
             aria-label="Default select example"
+            @change="refresh"
           >
             <option selected>Open this select menu</option>
             <option value="5">5</option>
@@ -249,7 +252,7 @@ watch(deleteIsOpen, async () => {
             <option value="20">20</option>
           </select>
           <q-btn
-            v-if="scope.pagesNumber > 2"
+            v-if="pagination.pagesNumber > 2"
             icon="first_page"
             color="grey-8"
             round
@@ -280,7 +283,7 @@ watch(deleteIsOpen, async () => {
           />
 
           <q-btn
-            v-if="scope.pagesNumber > 2"
+            v-if="pagination.pagesNumber > 2"
             icon="last_page"
             color="grey-8"
             round
@@ -289,8 +292,8 @@ watch(deleteIsOpen, async () => {
             :disable="isLastPage"
             @click="goLastPage"
           />
-        </template>
-      </q-table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
