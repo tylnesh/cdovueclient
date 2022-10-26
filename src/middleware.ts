@@ -92,6 +92,7 @@ const refreshTable = async (retrieveUrl:string):  Promise<any> => {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const debounce = (func:Function, timeout:number) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timer:any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (...args: any) => {
