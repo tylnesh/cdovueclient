@@ -23,6 +23,7 @@ import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Dealers from './views/Dealers.vue';
 import Printers from './views/Printers.vue';
+import Models from './views/Models.vue';
 
 
 
@@ -36,7 +37,8 @@ const router = createRouter({
     {path: '/', name: 'Home', component: Home},
     {path: '/login', name: 'Login', component: Login},
     {path: '/dealers', name: 'Dealers', component: Dealers},
-    {path: '/printers', name: 'Printers', component: Printers}
+    {path: '/printers', name: 'Printers', component: Printers},
+    {path: '/models', name: 'Models', component: Models},
   ]
 });
 

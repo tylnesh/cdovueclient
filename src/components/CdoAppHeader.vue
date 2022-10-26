@@ -16,6 +16,9 @@
       <router-link to="/printers" class="nav-item">
         <button class="btn btn-secondary ms-2 mb-2">Printers</button>
       </router-link>
+      <router-link to="/models" class="nav-item">
+        <button class="btn btn-secondary ms-2 mb-2">Models</button>
+      </router-link>
     </div>
   </nav>
 </template>
