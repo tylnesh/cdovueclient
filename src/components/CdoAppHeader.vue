@@ -5,7 +5,6 @@
     <div class="container">
       <router-link to="/" class="navbar-brand" href="#">
         <img class="logo" src="../assets/logo.svg" />
-        <span class="header-text">CDO Management Client</span>
       </router-link>
       <router-link to="/login" class="nav-item">
         <button class="btn btn-secondary ms-2 mb-2">Login form</button>
@@ -18,6 +17,9 @@
       </router-link>
       <router-link to="/models" class="nav-item">
         <button class="btn btn-secondary ms-2 mb-2">Models</button>
+      </router-link>
+      <router-link to="/payments" class="nav-item">
+        <button class="btn btn-secondary ms-2 mb-2">Payment types</button>
       </router-link>
     </div>
   </nav>

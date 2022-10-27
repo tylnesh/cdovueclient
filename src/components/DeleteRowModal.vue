@@ -12,7 +12,7 @@ const emit = defineEmits(["close"]);
 
 async function submit() {
   let formBody = {};
-  Object.assign(formBody, { dealerList: props.selected });
+  Object.assign(formBody, { list: props.selected });
 
   await sendToBackend(props.submitUrl + "/multi", "DELETE", JSON.stringify(formBody));
   emit("close");

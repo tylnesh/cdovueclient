@@ -24,6 +24,7 @@ import Login from './views/Login.vue';
 import Dealers from './views/Dealers.vue';
 import Printers from './views/Printers.vue';
 import Models from './views/Models.vue';
+import Payments from './views/Payments.vue';
 
 
 
@@ -39,6 +40,8 @@ const router = createRouter({
     {path: '/dealers', name: 'Dealers', component: Dealers},
     {path: '/printers', name: 'Printers', component: Printers},
     {path: '/models', name: 'Models', component: Models},
+    {path: '/payments', name: 'Payment Types', component: Payments},
+
   ]
 });
 

@@ -7,7 +7,7 @@ import CreateRowModal from "../components/CreateRowModal.vue";
 import EditRowModal from "../components/EditRowModal.vue";
 import DeleteRowModal from "../components/DeleteRowModal.vue";
 
-const rows: Ref<Array<{ id: number; manufacturer: string; model: string }>> = ref([]);
+const rows: Ref<Array<{ id: number }>> = ref([]);
 const pagination = ref({
   sortBy: "desc",
   descending: false,
@@ -19,73 +19,34 @@ const pagination = ref({
 
 const columns = [
   {
-    name: "manufacturer",
+    name: "paymentType",
     required: true,
     align: left,
-    label: "Manufacturer",
-    field: "manufacturer",
+    label: "Payment type",
+    field: "paymentType",
     sortable: true,
   },
   {
-    name: "model",
-    required: true,
+    name: "createdAt",
     align: left,
-    label: "Model",
-    field: "model",
+    label: "Date of creation",
+    field: "createdAt",
     sortable: true,
   },
   {
-    name: "yearFrom",
-    required: true,
+    name: "updateAt",
     align: left,
-    label: "From ",
-    field: "yearFrom",
+    label: "Last updated",
+    field: "updatedAt",
     sortable: true,
   },
-  {
-    name: "yearTo",
-    required: true,
-    align: left,
-    label: "- To (Year)",
-    field: "yearTo",
-    sortable: true,
-  },
-  // {
-  //   name: "createdAt",
-  //   align: left,
-  //   label: "Date of creation",
-  //   field: "createdAt",
-  //   sortable: true,
-  // },
-  // {
-  //   name: "updatedAt",
-  //   align: left,
-  //   label: "Last updated",
-  //   field: "updatedAt",
-  //   sortable: true,
-  // },
 ];
 
 const inputForm = ref([
   {
-    name: "manufacturer",
-    label: "Manufacturer",
-    field: "manufacturer",
-  },
-  {
-    name: "model",
-    label: "Model",
-    field: "model",
-  },
-  {
-    name: "yearFrom",
-    label: "From:",
-    field: "yearFrom",
-  },
-  {
-    name: "yearTo",
-    label: "To:",
-    field: "yearTo",
+    name: "paymentType",
+    label: "Payment type",
+    field: "paymentType",
   },
 ]);
 
@@ -96,11 +57,11 @@ const createIsOpen = ref(false);
 const editIsOpen = ref(false);
 const deleteIsOpen = ref(false);
 
-const retrieveUrl = ref("http://localhost:8080/api/model");
-const createUrl = ref("http://localhost:8080/api/model/post");
-const updateUrl = ref("http://localhost:8080/api/model/update");
-const deleteUrl = ref("http://localhost:8080/api/model/delete");
-const searchUrl = ref("http://localhost:8080/api/model/search");
+const retrieveUrl = ref("http://localhost:8080/api/payment");
+const createUrl = ref("http://localhost:8080/api/payment/post");
+const updateUrl = ref("http://localhost:8080/api/payment/update");
+const deleteUrl = ref("http://localhost:8080/api/payment/delete");
+const searchUrl = ref("http://localhost:8080/api/payment/search");
 
 onMounted(async () => {
   const jsonData = await JSON.parse(
@@ -216,7 +177,7 @@ watch(deleteIsOpen, async () => {
       :submitUrl="createUrl"
       :inputForm="inputForm"
     >
-      <h3>New model</h3>
+      <h3>New payment</h3>
     </CreateRowModal>
 
     <EditRowModal
@@ -226,7 +187,7 @@ watch(deleteIsOpen, async () => {
       :inputForm="inputForm"
       :selected="selected"
     >
-      <h3>Edit model(s)</h3>
+      <h3>Edit payment(s)</h3>
     </EditRowModal>
 
     <DeleteRowModal
@@ -235,15 +196,15 @@ watch(deleteIsOpen, async () => {
       :submitUrl="deleteUrl"
       :selected="selected"
     >
-      <h3>Delete model(s)</h3>
+      <h3>Delete payment(s)</h3>
     </DeleteRowModal>
 
     <div class="q-pa-md bg-light">
       <q-table
-        title="Models"
+        title="Payments"
         :rows="rows"
         :columns="columns"
-        row-key="model"
+        row-key="paymentType"
         selection="multiple"
         v-model:selected="selected"
         v-model:pagination="pagination"
