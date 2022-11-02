@@ -60,6 +60,7 @@ const inputForm = ref([
     name: "color",
     label: "Color",
     field: "color",
+    type: "color",
   },
 ]);
 

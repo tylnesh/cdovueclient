@@ -94,6 +94,16 @@ const closeModal = () => {
             >
               <label for="name" class="form-label">{{ inputFormPart.label }}</label>
               <input
+                v-if="inputFormPart.type == 'color'"
+                type="color"
+                class="form-control"
+                id="inputFormPart.name"
+                v-model="
+                  computedValues[inputCounter + selectedCounter * props.inputForm.length]
+                "
+              />
+              <input
+                v-if="inputFormPart.type != 'color'"
                 type="text"
                 class="form-control"
                 id="inputFormPart.name"
