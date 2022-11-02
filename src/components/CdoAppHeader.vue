@@ -21,6 +21,9 @@
       <router-link to="/payments" class="nav-item">
         <button class="btn btn-secondary ms-2 mb-2">Payment types</button>
       </router-link>
+      <router-link to="/statuses" class="nav-item">
+        <button class="btn btn-secondary ms-2 mb-2">Statuses</button>
+      </router-link>
     </div>
   </nav>
 </template>
