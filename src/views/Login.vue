@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import AppVue from "../App.vue";
 import { setAccessToken, setRefreshToken } from "../middleware";
 
 const email = ref("");

@@ -1,8 +1,4 @@
-<script setup lang="ts">
-import { ref } from "vue";
-const email = ref("");
-const pass = ref("");
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <h1 class="text-light">Home</h1>
