@@ -7,7 +7,9 @@ import CreateRowModal from "../components/CreateRowModal.vue";
 import EditRowModal from "../components/EditRowModal.vue";
 import DeleteRowModal from "../components/DeleteRowModal.vue";
 
-const rows: Ref<Array<{ id: number }>> = ref([]);
+const rows: Ref<
+  Array<{ id: number; paymentType: string; createdAt: string; updatedAt: string }>
+> = ref([]);
 const pagination = ref({
   sortBy: "desc",
   descending: false,
@@ -88,8 +90,7 @@ const refresh = async () => {
 const sendSearchRequest = debounce(async () => {
   console.log("test of debounce");
   let formBody = {};
-  Object.assign(formBody, { dealer: searchInput.value });
-  Object.assign(formBody, { slug: searchInput.value });
+  Object.assign(formBody, { paymentType: searchInput.value });
 
   const response = await sendToBackend(searchUrl.value, "POST", JSON.stringify(formBody));
   let responseText = await JSON.stringify(response);

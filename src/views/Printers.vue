@@ -88,8 +88,7 @@ const refresh = async () => {
 const sendSearchRequest = debounce(async () => {
   console.log("test of debounce");
   let formBody = {};
-  Object.assign(formBody, { dealer: searchInput.value });
-  Object.assign(formBody, { slug: searchInput.value });
+  Object.assign(formBody, { printer: searchInput.value });
 
   const response = await sendToBackend(searchUrl.value, "POST", JSON.stringify(formBody));
   let responseText = await JSON.stringify(response);
