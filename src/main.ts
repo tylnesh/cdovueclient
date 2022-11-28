@@ -26,6 +26,7 @@ import Printers from './views/Printers.vue';
 import Models from './views/Models.vue';
 import Payments from './views/Payments.vue';
 import Statuses from './views/Statuses.vue';
+import Designs from './views/Designs.vue';
 
 
 
@@ -43,7 +44,7 @@ const router = createRouter({
     {path: '/models', name: 'Models', component: Models},
     {path: '/payments', name: 'Payment Types', component: Payments},
     {path: '/statuses', name: 'Statuses', component: Statuses},
-
+    {path: '/designs', name: 'Designs', component: Designs},
 
   ]
 });

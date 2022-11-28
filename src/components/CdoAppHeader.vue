@@ -24,6 +24,9 @@
       <router-link to="/statuses" class="nav-item">
         <button class="btn btn-secondary ms-2 mb-2">Statuses</button>
       </router-link>
+      <router-link to="/designs" class="nav-item">
+        <button class="btn btn-secondary ms-2 mb-2">Designs</button>
+      </router-link>
     </div>
   </nav>
 </template>
