@@ -7,22 +7,35 @@ const pass = ref("");
 
 async function submitLogin() {
   let formBody: string[] = [];
+  // let access_token: string;
+  // let refresh_token: string;
   formBody.push(encodeURIComponent("username") + "=" + encodeURIComponent(email.value));
   formBody.push(encodeURIComponent("password") + "=" + encodeURIComponent(pass.value));
   let formBodyString = formBody.join("&");
 
-  fetch("http://localhost:8080/api/login", {
+  // fetch("http://localhost:8080/api/login", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/x-www-form-urlencoded",
+  //   },
+  //   body: formBodyString,
+  // })
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     setAccessToken(data.access_token);
+  //     setRefreshToken(data.refresh_token);
+  //   });
+
+  const response = await fetch("http://localhost:8080/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: formBodyString,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      setAccessToken(data.access_token);
-      setRefreshToken(data.refresh_token);
-    });
+  });
+  const data = await response.json();
+  setAccessToken(await data.access_token);
+  setRefreshToken(await data.refresh_token);
 }
 </script>
 

@@ -2,24 +2,31 @@ let $accessToken:string;
 let $refreshToken:string;
 
 import { Ref, ref } from "vue";
-import { router } from "./main";
+import { router, getCookie, setCookie } from "./main";
 
 
-const getAccessToken = () => {
-  return $accessToken;
-};
+function getAccessToken() {
+  // return $accessToken;
+  return getCookie("accessToken");
+}
 
-const setAccessToken = (newAccessToken:string) => {
-  $accessToken = newAccessToken;
-};
+function setAccessToken(newAccessToken:string) {
+  // $accessToken = newAccessToken;
+  setCookie("accessToken", newAccessToken);
+}
 
-const getRefreshToken = () => {
-  return $refreshToken;
-};
+function getRefreshToken() {
+  // return $refreshToken;
+  return getCookie("refreshToken");
 
-const setRefreshToken = (newRefreshToken:string) => {
-  $refreshToken = newRefreshToken;
-};
+}
+
+function setRefreshToken(newRefreshToken:string) {
+  // $refreshToken = newRefreshToken;
+  setCookie("refreshToken", newRefreshToken);
+  
+}
+
 
 
 const refreshTokens = async () => {
@@ -76,7 +83,6 @@ const refreshTable = async (retrieveUrl:string):  Promise<any> => {
       rowsNumber: 0,
       pagesNumber: 0
     });
-
 
 
     pagination.value.page = await json["number"];

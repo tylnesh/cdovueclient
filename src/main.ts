@@ -6,9 +6,10 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from "vue-router";
-
 import { Quasar } from 'quasar';
 import quasarIconSet from 'quasar/icon-set/bootstrap-icons';
+import { globalCookiesConfig } from "vue3-cookies";
+
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css';
@@ -49,7 +50,25 @@ const router = createRouter({
   ]
 });
 
+function setCookie(cookieName:string, cookieValue:string) {
+  // this.$cookie.set(cookieName, cookieValue);
+  document.cookie = "" + cookieName + "=" + cookieValue; + "path=/;";
+}
+function getCookie(cookieName:string) {
+  this.$cookies.get(cookieName);
+}
+export { setCookie, getCookie };
 export { router };
+
+
+globalCookiesConfig({
+  expireTimes: "30d",
+  path: "/",
+  domain: "",
+  secure: false,
+  sameSite: "None",
+});
+
 const app = createApp(App);
 app.use(Quasar, {
   plugins: {}, // import Quasar plugins and add here
@@ -57,3 +76,4 @@ app.use(Quasar, {
 });
 app.use(router);
 app.mount('#app');
+
