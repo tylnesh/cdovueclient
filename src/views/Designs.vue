@@ -30,10 +30,21 @@ const columns = [
     name: "pathToImage",
     required: true,
     align: left,
-    label: "Models",
-    field: "models",
+    label: "pathToImage",
+    field: "pathToImage",
     sortable: true,
   },
+  // figure out how to show only model name
+  // {
+  //   name: "models",
+  //   required: true,
+  //   align: left,
+  //   label: "models",
+  //   field: "models",
+  //   sortable: true,
+  // },
+
+  // figure out how to show only model name
   {
     name: "models",
     required: true,
@@ -41,6 +52,9 @@ const columns = [
     label: "models",
     field: "models",
     sortable: true,
+    format: (val, row) =>
+      // `${JSON.stringify(val[0])}`,
+      `${val[0].id}`,
   },
   {
     name: "createdAt",
