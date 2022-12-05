@@ -2,29 +2,23 @@ let $accessToken:string;
 let $refreshToken:string;
 
 import { Ref, ref } from "vue";
-import { router, getCookie, setCookie } from "./main";
+import { router } from "./main";
 
 
 function getAccessToken() {
-  // return $accessToken;
-  return getCookie("accessToken");
+  return window.localStorage.getItem("accessToken");
 }
 
 function setAccessToken(newAccessToken:string) {
-  // $accessToken = newAccessToken;
-  setCookie("accessToken", newAccessToken);
+  window.localStorage.setItem("accessToken", newAccessToken);
 }
 
 function getRefreshToken() {
-  // return $refreshToken;
-  return getCookie("refreshToken");
-
+  return window.localStorage.getItem("refreshToken");
 }
 
 function setRefreshToken(newRefreshToken:string) {
-  // $refreshToken = newRefreshToken;
-  setCookie("refreshToken", newRefreshToken);
-  
+  window.localStorage.setItem("refreshToken", newRefreshToken);
 }
 
 

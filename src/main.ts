@@ -50,14 +50,7 @@ const router = createRouter({
   ]
 });
 
-function setCookie(cookieName:string, cookieValue:string) {
-  // this.$cookie.set(cookieName, cookieValue);
-  document.cookie = "" + cookieName + "=" + cookieValue; + "path=/;";
-}
-function getCookie(cookieName:string) {
-  this.$cookies.get(cookieName);
-}
-export { setCookie, getCookie };
+
 export { router };
 
 
