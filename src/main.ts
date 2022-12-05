@@ -50,17 +50,7 @@ const router = createRouter({
   ]
 });
 
-
 export { router };
-
-
-globalCookiesConfig({
-  expireTimes: "30d",
-  path: "/",
-  domain: "",
-  secure: false,
-  sameSite: "None",
-});
 
 const app = createApp(App);
 app.use(Quasar, {
