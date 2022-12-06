@@ -17,6 +17,30 @@ const pagination = ref({
   pagesNumber: 0,
 });
 
+const getModelString = (rowObject: any) => {
+  if (rowObject === undefined) return "";
+
+  return (
+    rowObject["manufacturer"] +
+    "  " +
+    rowObject["model"] +
+    "  " +
+    rowObject["yearFrom"] +
+    "-" +
+    rowObject["yearTo"] +
+    "\n"
+  );
+};
+
+const getModelStrings = (modelArray: any) => {
+  // if (modelArray instanceof Array) {
+  var modelString = "";
+  modelArray.forEach((element: any) => {
+    modelString += getModelString(element);
+  });
+  return modelString;
+  // }
+};
 const columns = [
   {
     name: "design",
@@ -30,31 +54,18 @@ const columns = [
     name: "pathToImage",
     required: true,
     align: left,
-    label: "pathToImage",
+    label: "Path to Image",
     field: "pathToImage",
     sortable: true,
   },
-  // figure out how to show only model name
-  // {
-  //   name: "models",
-  //   required: true,
-  //   align: left,
-  //   label: "models",
-  //   field: "models",
-  //   sortable: true,
-  // },
-
-  // figure out how to show only model name
   {
     name: "models",
     required: true,
     align: left,
-    label: "models",
+    label: "Fitting models",
     field: "models",
     sortable: true,
-    format: (val, row) =>
-      // `${JSON.stringify(val[0])}`,
-      `${val[0].id}`,
+    format: (val: any, row: any) => `${getModelStrings(val)}`,
   },
   {
     name: "createdAt",
@@ -64,7 +75,7 @@ const columns = [
     sortable: true,
   },
   {
-    name: "updateAt",
+    name: "updatedAt",
     align: left,
     label: "Last updated",
     field: "updatedAt",
@@ -73,6 +84,11 @@ const columns = [
 ];
 
 const inputForm = ref([
+  {
+    name: "design",
+    label: "Designs",
+    field: "design",
+  },
   {
     name: "design",
     label: "Designs",
@@ -230,6 +246,8 @@ watch(deleteIsOpen, async () => {
 
     <div class="q-pa-md bg-light">
       <q-table
+        grid
+        card-class="bg-primary text-white"
         title="Designs"
         :rows="rows"
         :columns="columns"
@@ -238,7 +256,8 @@ watch(deleteIsOpen, async () => {
         v-model:selected="selected"
         v-model:pagination="pagination"
         hide-pagination
-      />
+      >
+      </q-table>
       <div class="justify-center q-pa-md bg-light">
         <div class="d-flex flex-row">
           <label for="name" class="form-label m-2 fs-6">Rows per page: </label>
