@@ -134,7 +134,17 @@ const refresh = async () => {
 const sendSearchRequest = debounce(async () => {
   console.log("test of debounce");
   let formBody = {};
+  let searchModel = [{}];
+  Object.assign(searchModel, [
+    {
+      manufacturer: searchInput.value,
+      model: searchInput.value,
+      yearFrom: parseInt(searchInput.value),
+      yearTo: parseInt(searchInput.value),
+    },
+  ]);
   Object.assign(formBody, { design: searchInput.value });
+  Object.assign(formBody, { models: searchModel });
 
   const response = await sendToBackend(searchUrl.value, "POST", JSON.stringify(formBody));
   let responseText = await JSON.stringify(response);
